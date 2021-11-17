@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <meta charset="ISO-8859-1">
+    <title>User Manager</title>
+</head>
+<body>
+<div align="center">
+    <div sec:authorize="isAuthenticated()">
+        Welcome <b><span sec:authentication="name">Username</span></b>
+        &nbsp;
+        <i><span sec:authentication="principal.authorities">Roles</span></i>
+    </div>
+
+    <form th:action="@{/logout}" method="post">
+        <input type="submit" value="Logout" />
+    </form>
+
+
+
+    <br/><br/>
+    <table border="1" cellpadding="10">
+        <thead>
+        <tr>
+            <th>User ID</th>
+            <th>Name</th>
+            <th>Lastname</th>
+            <th>Password</th>
+
+
+            <th sec:authorize="hasAnyAuthority('USER')"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="user: ${users}">
+            <td th:text="${user.id}">Product ID</td>
+            <td th:text="${user.name}">Name</td>
+            <td th:text="${user.lastname}">Lastname</td>
+            <td th:text="${user.password}">Password</td>
+
+            <td sec:authorize="hasAnyAuthority('USER')">
+                <a th:href="@{'/' + ${user.id}}"></a>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>
